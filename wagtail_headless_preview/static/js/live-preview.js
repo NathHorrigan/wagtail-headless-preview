@@ -37,10 +37,10 @@ $(document).ready(() => {
         if ($previewButton.data('auto-update')) {
             $form.on('click change keyup DOMSubtreeModified', function () {
                 clearTimeout(triggerPreviewDataTimeout);
-                triggerPreviewDataTimeout = setTimeout(triggerPreviewUpdate, 500);
+                triggerPreviewDataTimeout = setTimeout(triggerPreviewUpdate, 150);
 
                 clearTimeout(autoUpdatePreviewDataTimeout);
-                autoUpdatePreviewDataTimeout = setTimeout(setPreviewData, 300);
+                autoUpdatePreviewDataTimeout = setTimeout(setPreviewData, 100);
             }).trigger('change');
         }
     })
