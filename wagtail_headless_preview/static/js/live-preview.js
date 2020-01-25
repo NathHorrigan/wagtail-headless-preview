@@ -11,7 +11,7 @@ $(document).ready(() => {
 
     const triggerPreviewUpdate = () => {
         return $.ajax({
-            url: `${previewUrl}?live_preview=true`,
+            url: `${previewUrl}?preview_mode=live-preview`,
             method: 'GET',
             data: new FormData($form[0]),
             processData: false,

@@ -88,12 +88,12 @@ class HeadlessPreviewMixin:
             original_request=original_request, **meta
         )
         request.GET = request.GET.copy()
-        request.GET["live_preview"] = original_request.GET.get("live_preview")
+        request.GET["preview_mode"] = original_request.GET.get("preview_mode")
         return request
 
     def serve_preview(self, request, mode_name):
-        use_live_preview = request.GET.get("live_preview")
-        token = request.COOKIES.get("used-token")
+        use_live_preview = request.GET.get("preview_mode") == 'live_preview'
+        token = request.COOKIES.get("preview-token")
 
         if use_live_preview and token:
             page_preview, existed = self.update_page_preview(token)
@@ -119,7 +119,7 @@ class HeadlessPreviewMixin:
 
         if use_live_preview:
             # Set cookie that auto-expires after 5mins
-            response.set_cookie(key="used-token", value=response_token, max_age=300)
+            response.set_cookie(key="preview-token", value=response_token, max_age=300)
 
         return response
 
