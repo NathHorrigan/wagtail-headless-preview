@@ -16,6 +16,10 @@ $(document).ready(() => {
             data: new FormData($form[0]),
             processData: false,
             contentType: false
+        }).then(res => {
+            const previewUpdates = new BroadcastChannel(`wagtail-preview-${res.token}`)
+            previewUpdates.postMessage(res)
+            console.log(`posed to ${previewUpdates}`)
         })
     };
 
@@ -32,14 +36,12 @@ $(document).ready(() => {
     const onChange = debounce(() => {
         setPreviewData().then(() => {
             triggerPreviewUpdate()
-            const previewUpdates = new BroadcastChannel(`wagtail-preview-${res.token}`)
-            previewUpdates.postMessage(res)
         })
     }, 100)
 
     $previewButton.one('click', function () {
         if ($previewButton.data('auto-update')) {
-            $form.on('click change keyup DOMSubtreeModified', onChange).trigger('change');
+            $form.on('change DOMSubtreeModified', onChange).trigger('change');
         }
     })
 });
