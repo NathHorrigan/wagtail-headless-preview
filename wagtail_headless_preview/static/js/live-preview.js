@@ -33,18 +33,30 @@ $(document).ready(() => {
         });
     };
 
-    const onChange = () => {
+    const onChange = debounce(() => {
         setPreviewData().then(() => {
             triggerPreviewUpdate()
         })
-    }
+    }, 100)
 
     $previewButton.one('click', function () {
         if ($previewButton.data('auto-update')) {
-            $form.on('click change keyup DOMSubtreeModified', function () {
-                clearTimeout(triggerPreviewDataTimeout);
-                triggerPreviewDataTimeout = setTimeout(onChange, 40);
-            }).trigger('change');
+            $form.on('click change keyup DOMSubtreeModified', onChange).trigger('change');
         }
     })
 });
+
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
