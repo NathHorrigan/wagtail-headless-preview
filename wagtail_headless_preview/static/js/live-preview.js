@@ -9,6 +9,9 @@ $(document).ready(() => {
     let triggerPreviewDataTimeout = -1;
     let autoUpdatePreviewDataTimeout = -1;
 
+    // Broadcast Channel settings
+    let previewUpdates = null;
+
     const triggerPreviewUpdate = () => {
         return $.ajax({
             url: `${previewUrl}?mode=live-preview`,
@@ -16,6 +19,11 @@ $(document).ready(() => {
             data: new FormData($form[0]),
             processData: false,
             contentType: false
+        }).then(res => {
+            // Notify any local clients that the preview has changed
+            if (broadcastChannel == null)
+                previewUpdates = new BroadcastChannel(`wagtail-preview-${res.token}`)
+            previewUpdates.postMessage(res)
         })
     };
 
