@@ -117,7 +117,10 @@ class HeadlessPreviewMixin:
             response = render(
                 request,
                 "wagtail_headless_preview/preview.html",
-                {"preview_url": self.get_preview_url(response_token)},
+                {
+                    "preview_url": self.get_preview_url(response_token),
+                    "token": response_token
+                },
             )
 
         return response

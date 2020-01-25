@@ -3,4 +3,13 @@
         margin: 0; padding: 0; height: 100%; overflow: hidden;
     }
 </style>
-<iframe src="{{ preview_url }}" width="100%" height="100%" style="border: none;"></iframe>
+<iframe id="preview" src="{{ preview_url }}" width="100%" height="100%" style="border: none;"></iframe>
+<script>
+    // Trigger iFrame Update
+    var wn = document.getElementById('preview').contentWindow;
+    const channel = new BroadcastChannel("wagtail-preview-{{ token }}")
+    channel.onmessage = function(res) {
+        console.log({ res })
+        wn.postMessage(JSON.stringify(res))
+    }
+</script>
