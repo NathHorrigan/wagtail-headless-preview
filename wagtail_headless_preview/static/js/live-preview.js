@@ -37,11 +37,11 @@ $(document).ready(() => {
         setPreviewData().then(() => {
             triggerPreviewUpdate()
         })
-    }, 100)
+    }, 50)
 
     $previewButton.one('click', function () {
         if ($previewButton.data('auto-update')) {
-            $form.on('change DOMSubtreeModified', onChange).trigger('change');
+            $form.on('change keyup DOMSubtreeModified', onChange).trigger('change');
         }
     })
 });
