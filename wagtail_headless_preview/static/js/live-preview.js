@@ -34,7 +34,7 @@ $(document).ready(() => {
     };
 
     const onChange = () => {
-        setPreviewData.then(() => {
+        setPreviewData().then(() => {
             triggerPreviewUpdate()
         })
     }
