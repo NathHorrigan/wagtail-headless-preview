@@ -19,7 +19,6 @@ $(document).ready(() => {
         }).then(res => {
             const previewUpdates = new BroadcastChannel(`wagtail-preview-${res.token}`)
             previewUpdates.postMessage(res)
-            console.log(`posed to ${previewUpdates}`)
         })
     };
 
@@ -34,9 +33,7 @@ $(document).ready(() => {
     };
 
     const onChange = debounce(() => {
-        setPreviewData().then(() => {
-            triggerPreviewUpdate()
-        })
+        triggerPreviewUpdate()
     }, 100)
 
     $previewButton.one('click', function () {
