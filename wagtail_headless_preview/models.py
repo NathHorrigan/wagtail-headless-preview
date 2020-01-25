@@ -109,7 +109,7 @@ class HeadlessPreviewMixin:
             # Set cookie that auto-expires after 5mins
             response = JsonResponse({
                 'token': response_token,
-                'content_type': page_preview.content_type,
+                'content_type': self.content_type,
                 'created_at': page_preview.created_at
             })
             response.set_cookie(key="preview-token", value=response_token, max_age=300)
