@@ -83,16 +83,8 @@ class HeadlessPreviewMixin:
             )
         )
 
-    def dummy_request(self, original_request=None, **meta):
-        request = super(HeadlessPreviewMixin, self).dummy_request(
-            original_request=original_request, **meta
-        )
-        request.GET = request.GET.copy()
-        request.GET["preview_mode"] = original_request.GET.get("preview_mode")
-        return request
-
     def serve_preview(self, request, mode_name):
-        use_live_preview = request.GET.get("preview_mode") == 'live_preview'
+        use_live_preview = request.GET.get("mode") == 'live_preview'
         token = request.COOKIES.get("preview-token")
 
         if use_live_preview and token:
