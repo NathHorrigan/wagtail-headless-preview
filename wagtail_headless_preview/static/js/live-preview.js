@@ -33,14 +33,17 @@ $(document).ready(() => {
         });
     };
 
+    const onChange = () => {
+        setPreviewData.then(() => {
+            triggerPreviewUpdate()
+        })
+    }
+
     $previewButton.one('click', function () {
         if ($previewButton.data('auto-update')) {
             $form.on('click change keyup DOMSubtreeModified', function () {
                 clearTimeout(triggerPreviewDataTimeout);
-                triggerPreviewDataTimeout = setTimeout(triggerPreviewUpdate, 150);
-
-                clearTimeout(autoUpdatePreviewDataTimeout);
-                autoUpdatePreviewDataTimeout = setTimeout(setPreviewData, 100);
+                triggerPreviewDataTimeout = setTimeout(onChange, 40);
             }).trigger('change');
         }
     })
