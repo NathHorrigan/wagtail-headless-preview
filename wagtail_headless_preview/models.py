@@ -7,6 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.signing import TimestampSigner
 from django.db import models
 from django.shortcuts import render
+from django.http import JsonResponse
 
 
 class PagePreview(models.Model):
@@ -86,6 +87,7 @@ class HeadlessPreviewMixin:
     def serve_preview(self, request, mode_name):
         use_live_preview = mode_name == 'live-preview'
         token = request.COOKIES.get("preview-token")
+        page_preview = None
 
         if use_live_preview and token:
             page_preview, existed = self.update_page_preview(token)
@@ -101,17 +103,22 @@ class HeadlessPreviewMixin:
             page_preview = self.create_page_preview()
             page_preview.save()
 
+        response = None
         response_token = token or page_preview.token
-
-        response = render(
-            request,
-            "wagtail_headless_preview/preview.html",
-            {"preview_url": self.get_preview_url(response_token)},
-        )
-
         if use_live_preview:
             # Set cookie that auto-expires after 5mins
+            response = JsonResponse({
+                'token': response_token,
+                'content_type': page_preview.content_type,
+                'created_at': page_preview.created_at
+            })
             response.set_cookie(key="preview-token", value=response_token, max_age=300)
+        else:
+            response = render(
+                request,
+                "wagtail_headless_preview/preview.html",
+                {"preview_url": self.get_preview_url(response_token)},
+            )
 
         return response
 
