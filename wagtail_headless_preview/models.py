@@ -84,7 +84,7 @@ class HeadlessPreviewMixin:
         )
 
     def serve_preview(self, request, mode_name):
-        use_live_preview = request.GET.get("mode") == 'live_preview'
+        use_live_preview = mode_name == 'live-preview'
         token = request.COOKIES.get("preview-token")
 
         if use_live_preview and token:
