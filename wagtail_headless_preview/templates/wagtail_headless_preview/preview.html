@@ -9,7 +9,9 @@
     const origin = new URL("{{ preview_url }}").origin
     const wn = document.getElementById('preview').contentWindow;
     const channel = new BroadcastChannel("wagtail-preview-{{ token }}")
+    console.log(origin)
     channel.onmessage = function(res) {
+        console.log(res)
         wn.postMessage(JSON.stringify({
             type: 'preview-update',
             data: res.data
