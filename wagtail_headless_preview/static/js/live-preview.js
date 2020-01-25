@@ -21,8 +21,9 @@ $(document).ready(() => {
             contentType: false
         }).then(res => {
             // Notify any local clients that the preview has changed
-            if (broadcastChannel == null)
+            if (previewUpdates == null)
                 previewUpdates = new BroadcastChannel(`wagtail-preview-${res.token}`)
+                console.log(`Sending update requests on channel: wagtail-preview-${res.token}`)
             previewUpdates.postMessage(res)
         })
     };
