@@ -17,7 +17,7 @@ $(document).ready(() => {
             processData: false,
             contentType: false
         }).then(res => {
-            previewUpdates = new BroadcastChannel(`wagtail-preview-${res.token}`)
+            const previewUpdates = new BroadcastChannel(`wagtail-preview-${res.token}`)
             previewUpdates.postMessage(res)
             console.log(`posed to ${previewUpdates}`)
         })
